@@ -1,0 +1,25 @@
+Aplicabilidade para um código em C que utiliza uma pilha com armazenamento de nomes:
+
+sistema de cadastro de alunos em uma escola. Você pode usar uma pilha para armazenar
+os nomes dos alunos que se matricularam recentemente. Cada vez que um novo aluno se
+matricular, o nome dele será adicionado à pilha. Quando for necessário acessar os 
+nomes dos alunos, você poderá visualizar o nome do aluno que se matriculou mais 
+recentemente, que está no topo da pilha.
+
+
+
+Utilização das funções da pilha em C para implementar essa funcionalidade:
+
+1. Definir a estrutura da pilha que armazenará os nomes dos alunos.
+
+2. Criar uma função para inicializar a pilha.
+
+3. Desenvolver uma função de interação com o usuário para permitir que ele adicione, remova e visualize os nomes dos alunos na pilha.
+
+	3.1. Implementar uma função para adicionar o nome de um aluno à pilha (função de empilhar).
+
+	3.2. Implementar uma função para remover o nome do aluno do topo da pilha (função de desempilhar).
+	
+	3.3. Implementar uma função para exibir todos os nomes dos alunos armazenados na pilha.
+
+5. Criar uma função para acessar o nome do aluno no topo da pilha (função de acessar o topo).

@@ -98,6 +98,65 @@ void gerarMatricula(Aluno *aluno) {
 
 int main(int argc, char *argv[]) {
 	setlocale(LC_ALL, "pt_BR.UTF-8");
-	return 0;
+	
+    Pilha pilha;
+    inicializarPilha(&pilha);
+
+    int opcao;
+    do {
+        printf("\n----- Menu -----\n");
+        printf("1. Cadastrar aluno\n");
+        printf("2. Remover aluno do topo\n");
+        printf("3. Exibir todos os alunos cadastrados\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1: {
+            	system("cls"); // Limpar a tela
+                Aluno aluno;
+                printf("Digite o nome do aluno: ");
+                scanf(" %[^\n]s", aluno.nome);
+                gerarMatricula(&aluno);
+                empilhar(&pilha, aluno);
+                printf("Aluno cadastrado com sucesso!\n");
+                break;
+            }
+            case 2: {
+            	system("cls"); // Limpar a tela
+                if (!pilhaVazia(&pilha)) {
+                    Aluno alunoRemovido = desempilhar(&pilha);
+                    printf("Aluno removido: %s\n", alunoRemovido.nome);
+                } else {
+                    printf("A pilha está vazia. Nenhum aluno para remover.\n");
+                }
+                break;
+            }
+            case 3: {
+            	system("cls"); // Limpar a tela
+                if (!pilhaVazia(&pilha)) {
+                    printf("\n----- Alunos Cadastrados -----\n");
+                    for (int i = pilha.topo; i >= 0; i--) {
+                        printf("Nome: %s\n", pilha.alunos[i].nome);
+                        printf("Matrícula: %s\n\n", pilha.alunos[i].matricula);
+                    }
+                } else {
+                    printf("A pilha está vazia. Nenhum aluno cadastrado.\n");
+                }
+                break;
+            }
+            case 4:
+            	system("cls"); // Limpar a tela
+                printf("Encerrando o programa.\n");
+                break;
+            default:
+            	system("cls"); // Limpar a tela
+                printf("Opção inválida. Digite novamente.\n");
+                break;
+        }
+    } while (opcao != 4);
+
+    return 0;
 }
 

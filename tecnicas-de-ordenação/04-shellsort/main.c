@@ -19,8 +19,8 @@ void lista_gerar(void);
 void lista_ler(void);
 void lista_limpar(void);
 void lista_mostrar_ordenado(void);
-int bubbleSort(int vec[]);
 void troca(int* a, int* b);
+int shellSort(int vec[], int tam);
 
 //Função Principal
 int main(void){
@@ -38,9 +38,9 @@ int main(void){
 			case 2:
 				lista_ler();
 			break;
-			case 3: // Novo caso para chamar a função bubbleSort()
+			case 3:
 				lista_limpar();
-				qtd = bubbleSort(ordenado); // Atualiza o valor de qtd
+                qtd = shellSort(ordenado, tamanho);
                 lista_mostrar_ordenado();
                 break;
 		}
@@ -63,30 +63,8 @@ void lista_mostrar(void){
 void menu_mostrar(void){
 	printf("1 - Gerar lista aleatoriamente\n");
 	printf("2 - Criar lista manualmente\n");
-	printf("3 - Aplicar Bubble Sort\n");
+	printf("3 - Utilizar Shell Sort\n");
 	printf("0 - Sair...\n\n");
-}
-
-int bubbleSort(int vec[]) {
-    int qtd, i, j, tmp;
-    qtd = 0;
-    for (i = 0; i < tamanho - 1; i++) {
-        for (j = i + 1; j < tamanho; j++) {
-            if (vec[i] > vec[j]) {
-                troca(&vec[i], &vec[j]);
-            }
-            qtd++;
-        }
-    }
-    return qtd;
-}
-
-// Função genérica de troca de valores
-void troca(int* a, int* b) {
-    int tmp;
-    tmp = *a;
-    *a = *b;
-    *b = tmp;
 }
 
 //Gera uma lista aleatória
@@ -124,4 +102,35 @@ void lista_mostrar_ordenado(void){
 	printf("%d ",ordenado[i]);
 	}
 	printf("] Tempo = %d iteracoes\n\n", qtd);
+}
+
+//Função genérica de troca de valores
+void troca(int* a, int* b){
+	int tmp;
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+//Aplica o shellSort
+int shellSort(int vec[], int tam) {
+	int i , j , valor, qtd=0;
+	int gap = 1;
+	do {
+		gap = 3*gap+1;
+	} while(gap < tam);
+	do {
+		gap /= 3;
+		for(i = gap; i < tam; i++) {
+			valor = vec[i];
+			j = i - gap;
+			while (j >= 0 && valor < vec[j]) {
+			vec[j + gap] = vec[j];
+			j -= gap;
+			qtd++;
+			}
+			vec[j + gap] = valor;
+		}
+	} while ( gap > 1);
+	return (qtd);
 }

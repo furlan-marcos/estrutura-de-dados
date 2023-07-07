@@ -13,24 +13,39 @@ typedef struct no *ptr_no;
 ptr_no fila;
 int op;
 
-//Prototipacao
+//definindo a estrutura da pilha
+struct no_pilha {
+    char dado;
+    struct no_pilha* prox;
+};
+typedef struct no_pilha* ptr_no_pilha;
+
+// Prototipacao
 void menu_mostrar();
 void menu_selecionar(int op);
 void fila_inserir_manual(ptr_no fila);
-void fila_inseir_aleat(ptr_no fila);
+void fila_inserir_aleat(ptr_no fila);
 char atribuir_valor(int numero);
-void fila_remover(ptr_no fila);
+void fila_remover(ptr_no* fila);
 void fila_mostrar(ptr_no fila);
+
+void converter_sequencia(ptr_no fila, ptr_no_pilha* pilha);
+void imprimir_pilha(ptr_no_pilha pilha);
 
 //Funcao principal
 int main(void){
 	//inicializando a maquina de numeros randomicos
 	srand(time(NULL));
 	op = 1;
+	
 	//criando o primeiro no da fila
 	fila = (ptr_no) malloc(sizeof(struct no));
 	fila->dado = 0;
 	fila->prox = NULL;
+	
+	//criando o topo da pilha
+	ptr_no_pilha pilha = NULL;
+
 	//laco principal
 	while (op != 0){
 		system("cls");
@@ -86,7 +101,7 @@ void fila_inserir_manual(ptr_no fila) {
     }
 }
 
-//insere um elemento aleatorio no final da fila
+//insere 4 elemento aleatorio no final da fila
 void fila_inserir_aleat(ptr_no fila) {
     int i = 0;
     ptr_no atual;
@@ -141,7 +156,7 @@ void menu_selecionar(int op){
 			fila_inserir_aleat(fila);
 		break;
 		case 3:
-			fila_remover(fila);
+			fila_remover(&fila);
 		break;
 	}
 }
@@ -163,7 +178,7 @@ char atribuir_valor(int numero) {
             valor = 'G';
             break;
         case 0:
-            break; // Encerra a execução do switch
+            break;
         default:
             printf("Opcao invalida! Por favor, tente novamente.\n");
             break;
@@ -172,15 +187,60 @@ char atribuir_valor(int numero) {
     return valor;
 }
 
-//Remove um elemento do inicio da vila
-void fila_remover(ptr_no fila) {
-	ptr_no atual;
-	atual = (ptr_no) malloc(sizeof(struct no));
-	atual = fila;
-	if (fila->prox != NULL) {
-		fila = fila->prox;
-		atual->prox = fila->prox;
-	}
+void converter_sequencia(ptr_no fila, ptr_no_pilha* pilha) {
+    ptr_no atual = fila;
+    
+    while (atual != NULL) {
+        char nucleotideo = atual->dado;
+        char convertido;
+        
+        // Realize a conversão de nucleotídeos
+        switch (nucleotideo) {
+            case 'A':
+                convertido = 'T';
+                break;
+            case 'T':
+                convertido = 'A';
+                break;
+            case 'C':
+                convertido = 'G';
+                break;
+            case 'G':
+                convertido = 'C';
+                break;
+            default:
+                convertido = nucleotideo; // Mantém o mesmo valor se não for um nucleotídeo válido
+                break;
+        }
+        
+        // Insira o nucleotídeo convertido na pilha
+        ptr_no_pilha novo = (ptr_no_pilha)malloc(sizeof(struct no_pilha));
+        novo->dado = convertido;
+        novo->prox = *pilha;
+        *pilha = novo;
+        
+        atual = atual->prox;
+    }
+}
+
+void imprimir_pilha(ptr_no_pilha pilha) {
+    printf("Pilha: ");
+    
+    while (pilha != NULL) {
+        printf("%c ", pilha->dado);
+        pilha = pilha->prox;
+    }
+    
+    printf("\n");
+}
+
+//Remove um elemento do inicio da fila
+void fila_remover(ptr_no* fila) {
+    if (*fila != NULL) {
+        ptr_no atual = *fila;
+        *fila = (*fila)->prox;
+        free(atual);
+    }
 }
 
 //desenha o conteudo da fila na tela
@@ -199,4 +259,3 @@ void fila_mostrar(ptr_no fila) {
     }
     printf("\n");
 }
-
